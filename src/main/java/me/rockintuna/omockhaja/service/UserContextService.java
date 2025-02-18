@@ -53,8 +53,7 @@ public class UserContextService {
                     WebSocketSession user1 = sessionQueue.poll();
                     WebSocketSession user2 = sessionQueue.poll();
                     log.info("match:{}", matchId);
-                    matchMap.put(matchId, new Match(
-                            matchId, user1, user2));
+                    matchMap.put(matchId, new Match(matchId, user1, user2));
                     sendMessageTo("match:" + matchId, user1.getId());
                     sendMessageTo("match:" + matchId, user2.getId());
                     sleep(100L);
