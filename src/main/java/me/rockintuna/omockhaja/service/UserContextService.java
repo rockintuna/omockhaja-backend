@@ -54,8 +54,8 @@ public class UserContextService {
                     WebSocketSession user2 = sessionQueue.poll();
                     log.info("match:{}", matchId);
                     matchMap.put(matchId, new Match(matchId, user1, user2));
-                    sendMessageTo("match:" + matchId, user1.getId());
-                    sendMessageTo("match:" + matchId, user2.getId());
+                    sendMessageTo("match:" + "B:" + matchId, user1.getId());
+                    sendMessageTo("match:" + "W:" + matchId, user2.getId());
                     sleep(100L);
                 }
             } catch (InterruptedException e) {
