@@ -52,7 +52,6 @@ public class UserContextService {
                     String matchId = UUID.randomUUID().toString();
                     WebSocketSession user1 = sessionQueue.poll();
                     WebSocketSession user2 = sessionQueue.poll();
-                    log.info("match:{}", matchId);
                     matchMap.put(matchId, new Match(matchId, user1, user2));
                     sendMessageTo("match:" + "B:" + matchId, user1.getId());
                     sendMessageTo("match:" + "W:" + matchId, user2.getId());
