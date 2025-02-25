@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.rockintuna.omockhaja.domain.Match;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -25,6 +26,12 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        super.afterConnectionClosed(session, status);
+        log.info("id:{} left the session.", session.getId());
+    }
+
+    @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         String[] messages = message.getPayload().split(":");
         String matchId = messages[0];
@@ -41,6 +48,10 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             } else {
                 userContextService.sendMessageTo("win", match.getBlackStonePlayer().getId());
                 userContextService.sendMessageTo("loose", match.getWhiteStonePlayer().getId());
+            }
+            userContextService.getMatchMap().remove(matchId);
+            for (WebSocketSession player : match.getPlayers()) {
+                player.close(CloseStatus.NO_STATUS_CODE);
             }
         } else {
             if ( color.equals("B") ) {

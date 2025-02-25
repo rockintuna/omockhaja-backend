@@ -56,4 +56,8 @@ public class Match {
         return row >= 0 && row <= 18 && col >= 0 && col <= 18;
     }
 
+    public WebSocketSession[] getPlayers() {
+        return new WebSocketSession[]{this.blackStonePlayer, this.whiteStonePlayer};
+    }
+
 }
